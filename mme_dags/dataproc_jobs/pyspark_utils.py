@@ -109,6 +109,7 @@ def youtube_api(api_key, version, row):
                     videos_info.append({
                         'song_title': song_title,
                         'artist_name': artist_name,
+                        'isrc': row['isrc'],
                         'channel_id': video_info['snippet']['channelId'] if 'channelId' in video_info['snippet'] else None,
                         'title': video_info['snippet']['title'] if 'title' in video_info['snippet'] else None,
                         'channel_title': video_info['snippet']['channelTitle'] if 'channelTitle' in video_info['snippet'] else None,
@@ -121,6 +122,7 @@ def youtube_api(api_key, version, row):
                 return [{
                         'song_title': song_title,
                         'artist_name': artist_name,
+                        'isrc': row['isrc'],
                         'channel_id' : None,
                         'title': None,
                         'channel_title': None,

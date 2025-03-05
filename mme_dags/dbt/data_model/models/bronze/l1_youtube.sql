@@ -6,6 +6,7 @@
 SELECT 
     song_title,
     channel_id,
+    isrc,
     title,
     channel_title,
     CAST(publish_time AS TIMESTAMP) AS publish_time,
