@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: l1_spotify
+    meta:
+      owner: "@ravel"
+    columns:
+      - name: isrc
+        tests:
+          - not_null
+          - unique
+      - name: code
+        tests:
+        - relationships:
+            to: ref('l1_youtube')
+            field: code
+  - name: l1_youtube
+    meta:
+      owner: "@ravel"
+    columns:
+      - name: video_id
+        tests:
+          - not_null
+          - unique
+      - name: code
+        tests:
+        - relationships:
+            to: ref('l1_spotify')
+            field: code

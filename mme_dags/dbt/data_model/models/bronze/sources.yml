@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: dwh
+    description: this source is dataset for all L0 tables 
+    schema: bronze_layer
+    tables:
+      - name: spotify
+        description: Level 0 of spotify table
+        identifier: l0_spotify
+        freshness:
+          warn_after: { count: 2, period: day }
+        loaded_at_field: "CAST(ingested_at AS TIMESTAMP)"
+      - name: youtube
+        description: Level 0 of youtube table
+        identifier: l0_youtube
+        freshness:
+          warn_after: { count: 2, period: day }
+        loaded_at_field: "CAST(ingested_at AS TIMESTAMP)"
+  

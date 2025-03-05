@@ -1,0 +1,36 @@
+name: "data_model"
+version: "1.0.0"
+config-version: 2
+profile: ""
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+  - "logs"
+
+models:
+  data_model:
+    +materialized: view
+    bronze:
+      +materialized: incremental
+      +schema: bronze_layer
+    silver:
+      +materialized: table
+      +schema: silver_layer
+    gold:
+      +materialized: table
+      +schema: gold_layer
+seeds:
+  data_model:
+    +schema: bronze_layer
+tests:
+  data_model:
+    +severity: warn

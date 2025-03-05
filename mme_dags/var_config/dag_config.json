@@ -1,0 +1,174 @@
+{
+  "main_config": {
+    "project_name": "",
+    "gcp_config_filepath": "/home/airflow/gcs/dags/config/gcp_config.yaml"
+  },
+  "master": {
+    "dag_name": "master-pipeline",
+    "dag_owner": {
+      "id": "",
+      "name": "Ravelino Nathanael"
+    },
+    "schedule_run": "5 21 * * *",
+    "daily_run_utc_time": 4,
+    "max_parallel_tasks": 1,
+    "monthly_pipeline_date" : 1,
+    "dag_group": [
+      "bronze",
+      "silver",
+      "gold",
+      "reverse"
+    ],
+    "dbtb": {
+      "gke_config": {
+        "cluster_config": {
+          "cluster_name": "didx-dbt",
+          "cluster_description": "This cluster is used to deploy and run DBT service",
+          "cluster_location": "asia-southeast2",
+          "cluster_zones": ["asia-southeast2-a"],
+          "cluster_network": "default",
+          "logging_service": "logging.googleapis.com/kubernetes",
+          "monitoring_service": "monitoring.googleapis.com/kubernetes",
+          "vertical_pod_autoscaling": "True"
+        },
+        "nodepool_config": {
+          "nodepool0": {
+            "nodepool_name": "node-pool-0",
+            "initial_node_count": "2",
+            "node_config": {
+              "machine_type": "n1-standard-1",
+              "image_type": "ubuntu_containerd",
+              "disk_type": "pd-standard",
+              "disk_size_in_gb": "500",
+              "oauth_scopes": [
+                "https://www.googleapis.com/auth/compute",
+                "https://www.googleapis.com/auth/bigquery",
+                "https://www.googleapis.com/auth/devstorage.full_control",
+                "https://www.googleapis.com/auth/logging.admin",
+                "https://www.googleapis.com/auth/monitoring"
+              ],
+              "service_account": ""
+            }
+          }
+        },
+        "autoscaler_config": {
+          "autoprovisioning": "True",
+          "cpu_limiter": {
+            "minimum": "1",
+            "maximum": "4"
+          },
+          "memory_limiter": {
+            "minimum": "3.75",
+            "maximum": "24"
+          }
+        }
+      },
+    "dbt_pod_config": {
+        "pod_name": "pod-dbt-run-model",
+        "namespace": "default",
+        "image": "asia-southeast2-docker.pkg.dev/$project_name/data-modeling/custom-dbt-main:latest",
+        "image_pull_policy": "Always",
+        "get_logs": "True",
+        "startup_timeout": "300",
+        "on_finish_state": "delete_pod",
+        "commands": [
+          "sh",
+          "-c",
+          "cd /app/data_model/;export DBT_PROFILES_DIR=/app;export DBT_EXEC_PROFILE=$environment;"
+        ]
+      }
+    },
+    "pipelines": {
+      "bronze": {
+        "one-time": [
+        ],
+        "unused": [
+          "none-pipeline"
+        ],
+        "daily": [
+  
+        ],
+        "hourly": [
+        ],
+        "daily-modeling": "bronze-run-data-model-pipeline"
+      },
+      "silver": {
+        "daily-modeling":"silver-run-data-model-pipeline"
+      },
+      "gold": {
+        "daily-modeling":"gold-run-data-model-pipeline"
+      },
+      "reverse":{
+        "daily":""
+      }
+   } 
+  },
+  "bronze": {
+    "dbtb": {
+      "dag_name": "bronze-run-data-model-pipeline",
+      "dag_tags": ["daily", "bq", "bronze-layer", "L1", "run", "dbt"],
+      "dag_retries": "1",
+      "dag_owner": {
+        "id": "ravelino.nathanael@dentsu.com",
+        "name": "Ravelino Nathanael"
+      },
+      "gke_config": {
+        "cluster_config": {
+          "cluster_name": "didx-dbt",
+          "cluster_description": "This cluster is used to deploy and run DBT service",
+          "cluster_location": "asia-southeast2",
+          "cluster_zones": ["asia-southeast2-a"],
+          "cluster_network": "default",
+          "logging_service": "logging.googleapis.com/kubernetes",
+          "monitoring_service": "monitoring.googleapis.com/kubernetes",
+          "vertical_pod_autoscaling": "True"
+        },
+        "nodepool_config": {
+          "nodepool0": {
+            "nodepool_name": "node-pool-0",
+            "initial_node_count": "2",
+            "node_config": {
+              "machine_type": "n1-standard-1",
+              "image_type": "ubuntu_containerd",
+              "disk_type": "pd-standard",
+              "disk_size_in_gb": "500",
+              "oauth_scopes": [
+                "https://www.googleapis.com/auth/compute",
+                "https://www.googleapis.com/auth/bigquery",
+                "https://www.googleapis.com/auth/devstorage.full_control",
+                "https://www.googleapis.com/auth/logging.admin",
+                "https://www.googleapis.com/auth/monitoring"
+              ],
+              "service_account": ""
+            }
+          }
+        },
+        "autoscaler_config": {
+          "autoprovisioning": "True",
+          "cpu_limiter": {
+            "minimum": "1",
+            "maximum": "4"
+          },
+          "memory_limiter": {
+            "minimum": "3.75",
+            "maximum": "24"
+          }
+        }
+      },
+    "dbt_pod_config": {
+        "pod_name": "pod-dbt-run-model",
+        "namespace": "default",
+        "image": "asia-southeast2-docker.pkg.dev/$project_name/data-modeling/custom-dbt-main:latest",
+        "image_pull_policy": "Always",
+        "get_logs": "True",
+        "startup_timeout": "300",
+        "on_finish_state": "delete_pod",
+        "commands": [
+          "sh",
+          "-c",
+          "cd /app/data_model/;export DBT_PROFILES_DIR=/app;export DBT_EXEC_PROFILE=$environment;"
+        ]
+      }
+    } 
+    }
+  }

@@ -1,0 +1,21 @@
+mme_dwh:
+  target: "{{ env_var('DBT_EXEC_PROFILE') }}" 
+  outputs:
+    staging:
+      type: bigquery
+      project: PROJECT-NAME-DEV
+      location: asia-southeast2
+      dataset: bronze_layer
+      method: service-account
+      keyfile: SERVICE_ACCOUNT
+      threads: 2
+      fixed_retries: 1
+    main:
+      type: bigquery
+      project: PROJECT-NAME-PROD
+      location: asia-southeast2
+      dataset: bronze_layer
+      method: service-account
+      keyfile: SERVICE_ACCOUNT
+      threads: 2
+      fixed_retries: 1
