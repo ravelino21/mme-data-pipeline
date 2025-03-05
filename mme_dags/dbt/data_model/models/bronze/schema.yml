@@ -9,11 +9,7 @@ models:
         tests:
           - not_null
           - unique
-      - name: code
-        tests:
-        - relationships:
-            to: ref('l1_youtube')
-            field: code
+
   - name: l1_youtube
     meta:
       owner: "@ravel"
@@ -22,8 +18,3 @@ models:
         tests:
           - not_null
           - unique
-      - name: code
-        tests:
-        - relationships:
-            to: ref('l1_spotify')
-            field: code

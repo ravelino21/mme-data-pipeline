@@ -4,13 +4,12 @@
 )}}
 
 SELECT 
-    code,
     song_title,
-    original_artist,
     channel_id,
     title,
     channel_title,
     CAST(publish_time AS TIMESTAMP) AS publish_time,
-    video_id
+    video_id, 
+    `description`
 FROM {{ source('dwh', 'youtube') }}
 
