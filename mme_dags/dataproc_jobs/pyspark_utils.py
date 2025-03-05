@@ -114,6 +114,7 @@ def youtube_api(api_key, version, row):
                         'channel_title': video_info['snippet']['channelTitle'] if 'channelTitle' in video_info['snippet'] else None,
                         'publish_time': video_info['snippet']['publishTime'] if 'publishTime' in video_info['snippet'] else None,
                         'video_id': video_info['id']['videoId'] if 'videoId' in video_info['id'] else None,
+                        'description': video_info['snippet']['description'] if 'description' in video_info['snippet'] else None
                     })
                 return videos_info
             else:
@@ -125,6 +126,7 @@ def youtube_api(api_key, version, row):
                         'channel_title': None,
                         'publish_time': None,
                         'video_id': None,
+                        'description': None
                     }]
         else:
             time.sleep(300)
