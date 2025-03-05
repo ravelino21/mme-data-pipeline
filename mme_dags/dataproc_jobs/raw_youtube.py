@@ -14,7 +14,7 @@ def main_process(api_config):
         .appName("raw-youtube-ingestion") \
         .getOrCreate()
     sc = spark.sparkContext
-    internal_df = spark.read.option('header', True).csv('/home/jovyan/work/mme_dags/dataproc_jobs/spotify_data/spotify_data.csv')
+    internal_df = spark.read.option('header', True).csv('mme_dags/dataproc_jobs/spotify_data/spotify_data.csv')
     internal_df.show()
     internal_df = internal_df.repartition(50)
     current_timestamp =  datetime.now().strftime('%Y-%m-%d %H:%M:%S')

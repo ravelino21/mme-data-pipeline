@@ -16,7 +16,7 @@ def main_process(api_config):
     sc = spark.sparkContext
     current_timestamp =  datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     #read should be from BQ,this is for local purpose
-    internal_df = spark.read.option('header', True).csv('/home/jovyan/work/mme_dags/dataproc_jobs/mme_data.csv')
+    internal_df = spark.read.option('header', True).csv('mme_dags/dataproc_jobs/mme_data.csv')
 
     internal_df = internal_df.select(F.col('CODE').alias('code'),\
                                     F.col('ORIGINAL ARTIST').alias('original_artist'),\
