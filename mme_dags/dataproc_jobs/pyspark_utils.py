@@ -85,7 +85,6 @@ class spotify_api():
 def youtube_api(api_key, version, row):
     endpoint = f'https://www.googleapis.com/youtube/{version}/search'
     song_title = row['song_title']
-    original_artist = row['original_artist']
     artist_name = row['artist_name']
     data = urlencode({
         'key': api_key,
@@ -108,9 +107,8 @@ def youtube_api(api_key, version, row):
                 videos_info= []
                 for video_info in data:
                     videos_info.append({
-                        'code': row['code'],
                         'song_title': song_title,
-                        'original_artist': original_artist,
+                        'artist_name': artist_name,
                         'channel_id': video_info['snippet']['channelId'] if 'channelId' in video_info['snippet'] else None,
                         'title': video_info['snippet']['title'] if 'title' in video_info['snippet'] else None,
                         'channel_title': video_info['snippet']['channelTitle'] if 'channelTitle' in video_info['snippet'] else None,
@@ -120,9 +118,8 @@ def youtube_api(api_key, version, row):
                 return videos_info
             else:
                 return [{
-                        'code': row['code'],
                         'song_title': song_title,
-                        'original_artist': original_artist,
+                        'artist_name': artist_name,
                         'channel_id' : None,
                         'title': None,
                         'channel_title': None,
